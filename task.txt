@@ -1,0 +1,47 @@
+Вариант 13
+1 часть: Таблица Т1
+Задания для запросов:
+1) Вывести данные о СУБД для типов, не попадающих в список, задаваемый в запросе.
+2) Вывести список СУБД, кроме первой по алфавиту.
+3) Вывести типы СУБД, разрабатываемых теми же фирмами, которые разрабатывают
+СУБД, названия которых не попадают в диапазон, задаваемый в запросе.
+2 часть: Таблица Т3, HTML-форма: раскрывающийся список.
+
+
+Создание таблицы
+CREATE TABLE t2 (
+    ID INT PRIMARY KEY,
+    Name VARCHAR(255) NOT NULL,
+    Type VARCHAR(255) NOT NULL,
+    Company VARCHAR(255) NOT NULL
+);
+
+Заполнение таблицы
+INSERT INTO t2 (ID, Name, Type, Company) VALUES
+(1, 'Access', 'Реляц', 'Microsoft'),
+(2, 'FoxPro', 'Реляц', 'Microsoft'),
+(3, 'Oracle7', 'Реляц', 'Oracle'),
+(4, 'Orion3', 'ОО', 'Orion'),
+(5, 'Orion4', 'ОО', 'Orion'),
+(6, 'Delphi', 'ОО', 'Microsoft'),
+(7, 'Essbase1', 'Многом', 'Arbor'),
+(8, 'Essbase2', 'Многом', 'Arbor'),
+(9, 'Orion5', 'Многом', 'Orion'),
+(10, 'Oracle8', 'Многом', 'Oracle');
+
+1.Вывести данные о СУБД для типов, не попадающих в список, задаваемый в запросе.
+
+SELECT * FROM t2 WHERE Type NOT IN ('Реляц', 'Многом');
+
+2.Вывести список СУБД, кроме первой по алфавиту.
+
+SELECT * FROM t2 WHERE Name > (SELECT MIN(Name) FROM t2);
+
+3.Вывести типы СУБД, разрабатываемых теми же фирмами, которые разрабатывают
+    СУБД, названия которых не попадают в диапазон, задаваемый в запросе.
+
+SELECT DISTINCT Type FROM t2 WHERE Company IN (
+    SELECT DISTINCT Company FROM t2 WHERE Name NOT BETWEEN 'Access' AND 'Orion4'
+) 
+
+
